@@ -9,10 +9,20 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>UniversalLib.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>C01DB8F61C15DBEC002A42A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C01DB9061C15E268002A42A4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

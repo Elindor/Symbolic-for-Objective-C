@@ -6,9 +6,23 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		C01DB9061C15E268002A42A4 /* UniversalLib */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C01DB9071C15E268002A42A4 /* Build configuration list for PBXAggregateTarget "UniversalLib" */;
+			buildPhases = (
+				C01DB90A1C15E2AB002A42A4 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = UniversalLib;
+			productName = UniversalLib;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		C01DB8FB1C15DBEC002A42A4 /* Symbolic.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C01DB8FA1C15DBEC002A42A4 /* Symbolic.h */; };
-		C01DB8FD1C15DBEC002A42A4 /* Symbolic.m in Sources */ = {isa = PBXBuildFile; fileRef = C01DB8FC1C15DBEC002A42A4 /* Symbolic.m */; };
+		C01DB9051C15DBFB002A42A4 /* Fraction.m in Sources */ = {isa = PBXBuildFile; fileRef = C01DB9041C15DBFB002A42A4 /* Fraction.m */; };
+		C01DB90B1C15F0CF002A42A4 /* Fraction.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C01DB9031C15DBFB002A42A4 /* Fraction.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +32,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				C01DB8FB1C15DBEC002A42A4 /* Symbolic.h in CopyFiles */,
+				C01DB90B1C15F0CF002A42A4 /* Fraction.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -26,8 +40,8 @@
 
 /* Begin PBXFileReference section */
 		C01DB8F71C15DBEC002A42A4 /* libSymbolic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSymbolic.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C01DB8FA1C15DBEC002A42A4 /* Symbolic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Symbolic.h; sourceTree = "<group>"; };
-		C01DB8FC1C15DBEC002A42A4 /* Symbolic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Symbolic.m; sourceTree = "<group>"; };
+		C01DB9031C15DBFB002A42A4 /* Fraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fraction.h; path = ../Fraction.h; sourceTree = "<group>"; };
+		C01DB9041C15DBFB002A42A4 /* Fraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Fraction.m; path = ../Fraction.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +74,8 @@
 		C01DB8F91C15DBEC002A42A4 /* Symbolic */ = {
 			isa = PBXGroup;
 			children = (
-				C01DB8FA1C15DBEC002A42A4 /* Symbolic.h */,
-				C01DB8FC1C15DBEC002A42A4 /* Symbolic.m */,
+				C01DB9031C15DBFB002A42A4 /* Fraction.h */,
+				C01DB9041C15DBFB002A42A4 /* Fraction.m */,
 			);
 			path = Symbolic;
 			sourceTree = "<group>";
@@ -98,6 +112,9 @@
 					C01DB8F61C15DBEC002A42A4 = {
 						CreatedOnToolsVersion = 7.1.1;
 					};
+					C01DB9061C15E268002A42A4 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
 				};
 			};
 			buildConfigurationList = C01DB8F21C15DBEC002A42A4 /* Build configuration list for PBXProject "Symbolic" */;
@@ -113,16 +130,33 @@
 			projectRoot = "";
 			targets = (
 				C01DB8F61C15DBEC002A42A4 /* Symbolic */,
+				C01DB9061C15E268002A42A4 /* UniversalLib */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C01DB90A1C15E2AB002A42A4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# define output folder environment variable\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target Symbolic ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\nxcodebuild -target Symbolic -configuration ${CONFIGURATION} -sdk iphonesimulator -arch i386 BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 2. Create universal binary file using lipo\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n\n# Last touch. copy the header files. Just for convenience\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/include\" \"${UNIVERSAL_OUTPUTFOLDER}/\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C01DB8F31C15DBEC002A42A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C01DB8FD1C15DBEC002A42A4 /* Symbolic.m in Sources */,
+				C01DB9051C15DBFB002A42A4 /* Fraction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +261,20 @@
 			};
 			name = Release;
 		};
+		C01DB9081C15E268002A42A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C01DB9091C15E268002A42A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -244,6 +292,14 @@
 			buildConfigurations = (
 				C01DB9011C15DBEC002A42A4 /* Debug */,
 				C01DB9021C15DBEC002A42A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C01DB9071C15E268002A42A4 /* Build configuration list for PBXAggregateTarget "UniversalLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01DB9081C15E268002A42A4 /* Debug */,
+				C01DB9091C15E268002A42A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
